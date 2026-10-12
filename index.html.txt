@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock & Metal Radio - Reproductor</title>
+    <style>
+      /* ==========================================
+         ROCK & METAL RADIO
+         REPRODUCTOR
+         ========================================== */
+
+      .rm-player {
+        width: 100%;
+        max-width: 620px;
+        margin: 25px auto;
+        padding: 22px;
+        box-sizing: border-box;
+
+        background: linear-gradient(145deg, #111111, #292929);
+
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 28px;
+
+        box-shadow:
+          0 15px 40px rgba(0,0,0,0.55),
+          inset 0 1px 1px rgba(255,255,255,0.12);
+
+        color: #ffffff;
+
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+
+      /* ==========================================
+         TITULO
+         ========================================== */
+
+      .rm-title {
+        text-align: center;
+        margin-bottom: 22px;
+      }
+
+      .rm-title-small {
+        font-size: 12px;
+        letter-spacing: 4px;
+        color: #aaaaaa;
+        font-weight: bold;
+      }
+
+      .rm-title-name {
+        margin-top: 7px;
+
+        font-size: 28px;
+        font-weight: 900;
+
+        letter-spacing: 1px;
+
+        line-height: 1.1;
+      }
+
+
+      /* ==========================================
+         LOGO + INFORMACION
+         ========================================== */
+
+      .rm-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+
+      /* LOGO */
+
+      .rm-logo {
+        width: 125px;
+        height: 125px;
+
+        min-width: 125px;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+
+        border: 3px solid #777777;
+
+        box-shadow:
+          0 0 0 4px #222222,
+          0 8px 25px rgba(0,0,0,0.65);
+      }
+
+
+      /* INFORMACION */
+
+      .rm-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+
+      /* ==========================================
+         EN VIVO
+         ========================================== */
+
+      .rm-live {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        margin-bottom: 8px;
+
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      .rm-dot {
+        width: 10px;
+        height: 10px;
+
+        border-radius: 50%;
+
+        background: #d00000;
+
+        box-shadow:
+          0 0 10px #d00000;
+
+        animation: rmPulse 1.2s infinite;
+      }
+
+      @keyframes rmPulse {
+
+        0%,100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: .35;
+        }
+
+      }
+
+
+      /* ==========================================
+         NOMBRE
+         ========================================== */
+
+      .rm-song {
+        font-size: 19px;
+        font-weight: bold;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .rm-subtitle {
+        margin-top: 6px;
+
+        font-size: 14px;
+
+        color: #aaaaaa;
+      }
+
+
+      /* ==========================================
+         VISUALIZADOR
+         ========================================== */
+
+      .rm-visualizer {
+        height: 55px;
+
+        margin-top: 20px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+      }
+
+      .rm-bar {
+        width: 5px;
+
+        height: 10px;
+
+        border-radius: 5px;
+
+        background: #bbbbbb;
+
+        animation:
+          rmEqualizer .7s ease-in-out infinite alternate;
+
+        animation-play-state: paused;
+      }
+
+      .rm-player.playing .rm-bar {
+        animation-play-state: running;
+      }
+
+      .rm-bar:nth-child(2) {
+        animation-delay: -.2s;
+      }
+
+      .rm-bar:nth-child(3) {
+        animation-delay: -.4s;
+      }
+
+      .rm-bar:nth-child(4) {
+        animation-delay: -.1s;
+      }
+
+      .rm-bar:nth-child(5) {
+        animation-delay: -.5s;
+      }
+
+      .rm-bar:nth-child(6) {
+        animation-delay: -.3s;
+      }
+
+      .rm-bar:nth-child(7) {
+        animation-delay: -.6s;
+      }
+
+      .rm-bar:nth-child(8) {
+        animation-delay: -.2s;
+      }
+
+      .rm-bar:nth-child(9) {
+        animation-delay: -.4s;
+      }
+
+      .rm-bar:nth-child(10) {
+        animation-delay: -.1s;
+      }
+
+      .rm-bar:nth-child(11) {
+        animation-delay: -.5s;
+      }
+
+      .rm-bar:nth-child(12) {
+        animation-delay: -.3s;
+      }
+
+      @keyframes rmEqualizer {
+
+        from {
+          height: 8px;
+        }
+
+        to {
+          height: 42px;
+        }
+
+      }
+
+
+      /* ==========================================
+         CONTROLES
+         ========================================== */
+
+      .rm-controls {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 15px;
+
+        margin-top: 15px;
+      }
+
+
+      /* ==========================================
+         BOTON PLAY / PAUSA
+         ========================================== */
+
+      .rm-play {
+
+        width: 75px;
+        height: 48px;
+
+        border-radius: 25px;
+
+        border: 1px solid #777777;
+
+        background:
+          linear-gradient(145deg,#444444,#171717);
+
+        color: #ffffff;
+
+        font-size: 13px;
+
+        font-weight: bold;
+
+        letter-spacing: 1px;
+
+        cursor: pointer;
+
+        box-shadow:
+          0 5px 15px rgba(0,0,0,.5),
+          inset 0 1px 1px rgba(255,255,255,.15);
+
+        transition:
+          transform .15s,
+          background .15s;
+      }
+
+      .rm-play:hover {
+
+        transform: scale(1.04);
+
+      }
+
+      .rm-play:active {
+
+        transform: scale(.97);
+
+      }
+
+
+      /* ==========================================
+         VOLUMEN
+         ========================================== */
+
+      .rm-volume {
+
+        flex: 1;
+
+      }
+
+      .rm-volume input {
+
+        width: 100%;
+
+        cursor: pointer;
+
+      }
+
+
+      /* ==========================================
+         PIE
+         ========================================== */
+
+      .rm-footer {
+
+        text-align: center;
+
+        margin-top: 16px;
+
+        font-size: 10px;
+
+        letter-spacing: 2px;
+
+        color: #666666;
+      }
+
+
+      /* ==========================================
+         CELULARES
+         ========================================== */
+
+      @media (max-width: 520px) {
+
+        .rm-player {
+
+          width: 94%;
+
+          padding: 18px;
+
+          border-radius: 24px;
+
+        }
+
+
+        .rm-title-small {
+
+          font-size: 10px;
+
+          letter-spacing: 3px;
+
+        }
+
+
+        .rm-title-name {
+
+          font-size: 24px;
+
+        }
+
+
+        .rm-content {
+
+          gap: 14px;
+
+        }
+
+
+        .rm-logo {
+
+          width: 90px;
+
+          height: 90px;
+
+          min-width: 90px;
+
+        }
+
+
+        .rm-song {
+
+          font-size: 16px;
+
+        }
+
+
+        .rm-subtitle {
+
+          font-size: 12px;
+
+        }
+
+
+        .rm-play {
+
+          width: 70px;
+
+          height: 45px;
+
+        }
+
+      }
+
+
+      /* ==========================================
+         PANTALLAS MUY PEQUEÑAS
+         ========================================== */
+
+      @media (max-width: 360px) {
+
+        .rm-logo {
+
+          width: 78px;
+
+          height: 78px;
+
+          min-width: 78px;
+
+        }
+
+
+        .rm-title-name {
+
+          font-size: 21px;
+
+        }
+
+      }
+    </style>
+</head>
+<body style="background-color: #0b0b0b; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
+
+    <!-- ==========================================
+         ROCK & METAL RADIO
+         ========================================== -->
+
+    <div
+      class="rm-player"
+      id="rockMetalPlayer"
+    >
+
+
+      <!-- TITULO -->
+
+      <div class="rm-title">
+
+        <div class="rm-title-small">
+          TRANSMISIÓN EN VIVO
+        </div>
+
+        <div class="rm-title-name">
+          ROCK &amp; METAL RADIO
+        </div>
+
+      </div>
+
+
+      <!-- LOGO + INFORMACION -->
+
+      <div class="rm-content">
+
+
+        <!-- LOGO -->
+
+        <img
+          class="rm-logo"
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh927phV81lwL5FI8ymsrlmtONYDgc5nu-XJsLRusBfsT1hPyfSjMbF81JfbxiJtfYzzMW6KBwzOyOBSFRjts33VtAeMtN3xKFVTZjPquzrRRikQbLXwgR9LztsbvIi7zUTPcEbu7YXe7G-cGpA7PfuW6I930BhpKRZO0HfUwaV1yJSV1bHoBwIRwJlX0C_/s320/logo.jpeg"
+          alt="ROCK AND METAL RADIO"
+        >
+
+
+        <div class="rm-info">
+
+
+          <!-- EN VIVO -->
+
+          <div class="rm-live">
+
+            <span class="rm-dot"></span>
+
+            EN VIVO
+
+          </div>
+
+
+          <!-- NOMBRE -->
+
+          <div class="rm-song">
+
+            ROCK &amp; METAL RADIO
+
+          </div>
+
+
+          <div class="rm-subtitle">
+
+            Música Rock &amp; Metal
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- ==========================================
+           VISUALIZADOR
+           ========================================== -->
+
+      <div class="rm-visualizer">
+
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+        <span class="rm-bar"></span>
+
+      </div>
+
+
+      <!-- ==========================================
+           CONTROLES
+           ========================================== -->
+
+      <div class="rm-controls">
+
+
+        <!-- BOTON -->
+
+        <button
+          class="rm-play"
+          id="rmPlay"
+          type="button"
+        >
+          PLAY
+        </button>
+
+
+        <!-- VOLUMEN -->
+
+        <div class="rm-volume">
+
+          <input
+            id="rmVolume"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.8"
+          >
+
+        </div>
+
+
+      </div>
+
+
+      <!-- PIE -->
+
+      <div class="rm-footer">
+
+        ROCK &amp; METAL RADIO • TRANSMISIÓN ONLINE
+
+      </div>
+
+
+      <!-- ==========================================
+           STREAMING
+           ========================================== -->
+
+      <audio
+        id="rmAudio"
+        preload="none"
+        src="https://cesarradio.realserver.es/listen/rock_y_metal/radio.mp3"
+      ></audio>
+
+
+    </div>
+
+
+    <script>
+
+    (function() {
+
+
+      /* ELEMENTOS */
+
+      const player =
+        document.getElementById("rockMetalPlayer");
+
+      const audio =
+        document.getElementById("rmAudio");
+
+      const playButton =
+        document.getElementById("rmPlay");
+
+      const volume =
+        document.getElementById("rmVolume");
+
+
+      /* VOLUMEN INICIAL */
+
+      audio.volume = 0.8;
+
+
+      /* ==========================================
+         PLAY / PAUSA
+         ========================================== */
+
+      playButton.addEventListener(
+        "click",
+        function() {
+
+
+          if (audio.paused) {
+
+
+            audio.play()
+
+            .then(function() {
+
+
+              player.classList.add("playing");
+
+
+              playButton.textContent =
+                "PAUSA";
+
+
+            })
+
+
+            .catch(function(error) {
+
+
+              console.log(error);
+
+
+              playButton.textContent =
+                "ERROR";
+
+
+              alert(
+                "No se pudo conectar con ROCK & METAL RADIO."
+              );
+
+
+            });
+
+
+          }
+
+          else {
+
+
+            audio.pause();
+
+
+            player.classList.remove(
+              "playing"
+            );
+
+
+            playButton.textContent =
+              "PLAY";
+
+
+          }
+
+
+        }
+      );
+
+
+      /* ==========================================
+         VOLUMEN
+         ========================================== */
+
+      volume.addEventListener(
+        "input",
+        function() {
+
+          audio.volume =
+            Number(volume.value);
+
+        }
+      );
+
+
+      /* ==========================================
+         PAUSA
+         ========================================== */
+
+      audio.addEventListener(
+        "pause",
+        function() {
+
+          player.classList.remove(
+            "playing"
+          );
+
+          playButton.textContent =
+            "PLAY";
+
+        }
+      );
+
+
+      /* ==========================================
+         REPRODUCCION
+         ========================================== */
+
+      audio.addEventListener(
+        "play",
+        function() {
+
+          player.classList.add(
+            "playing"
+          );
+
+          playButton.textContent =
+            "PAUSA";
+
+        }
+      );
+
+
+    })();
+    </script>
+</body>
+</html>
